@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rui.mapper.LogMapper">
+	<select id="selAll" resultType="Log">
+		select * from t_log
+	</select>
+	<!-- 当多参数时不需要写parameterType -->
+	<select id="selByAccInAccOut" resultType="Log">
+		<!-- select * from t_log where accIn = #{param1} and accOut = #{param2} 
+			select * from t_log where 1 = 1 OGNL表达式,直接写key或对象属性 <if test="accIn != null 
+			and accIn !=''"> and accIn = #{accIn} </if> <if test="accOut != null and 
+			accOut !=''"> and accOut = #{accOut} </if> -->
+		select * from t_log
+		<!-- where去掉第一个and并生产where关键字 -->
+		<!-- <where> <if test="accIn != null and accIn !=''"> and accIn = #{accIn} 
+			</if> <if test="accOut != null and accOut !=''"> and accOut = #{accOut} </if> 
+			</where> -->
+	</select>
+	<!-- <select id="selByLog" parameterType="log" resultType="log">
+			select * from log
+			<trim prefix="abc" prefixOverrides="abc">abc</trim>
+	</select> -->
+	<select id="selByLog" parameterType="log" resultType="log">
+		<bind name="accin" value="'%'+accin+'%'"/>
+		#{accin}
+	</select>
+	<update id="upd" parameterType="Log">
+	<!-- set标签去掉第一个逗号并生产set关键字 -->
+		update t_log
+		<set>
+			id=#{id},
+			<if test="accIn!=null and accIn!=''">
+				accIn=#{accIn},
+			</if>
+			<if test="accOut!=null and accOut!=''">
+				accOut=#{accOut},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>
