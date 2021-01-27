@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<!-- 配置数据库连接池 -->
+	<Resource
+		driverClassName="com.mysql.cj.jdbc.Driver"
+		url="jdbc:mysql://localhost:3306/ssm?serverTimezone=UTC"
+		username="root"
+		password="capslock"
+		maxActive="50"	
+		maxIdle="20"	
+		name="test"
+		auth="Container" 
+		maxWait="10000"
+		type="javax.sql.DataSource"
+	/>
+</Context>
