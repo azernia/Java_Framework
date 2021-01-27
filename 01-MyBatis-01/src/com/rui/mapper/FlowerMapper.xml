@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!-- namespace:理解成实现类的全路径 -->
+ <mapper namespace="com.rui.Flower">
+ 	<!-- 
+ 		id:方法名 
+		parameterType:定义参数类型
+		resultType:返回值类型.
+		
+		如果方法返回值是list,在resultType中写List的泛型,因为mybatis
+		对jdbc封装,一行一行读取数据
+		只要是在XML文件内使用自己定义的类名,都需要使用全路径
+	-->
+ 	<select id="selAll" resultType="com.rui.pojo.Flower">
+ 		select * from flower
+ 	</select>
+ 	<select id="selOne" resultType="int">
+ 		select count(*) from flower
+ 	</select>
+ 	<select id="selMap" resultType="com.rui.pojo.Flower">
+ 		select * from flower
+ 	</select>
+ </mapper>
