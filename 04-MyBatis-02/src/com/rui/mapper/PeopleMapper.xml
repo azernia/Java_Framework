@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rui.mapper.PeopleMapper">
+	<select id="selAll" resultType="com.rui.pojo.People">
+		select * from t_people
+	</select>	
+	<select id="selById" resultType="com.rui.pojo.People" parameterType="int">
+	<!-- 获取参数用#{}获取，大括号内数字表明第几个参数从0开始，或使用param数字(从1开始)，如果是对象{属性名}，如果是map{key} -->
+		select * from t_people where id = #{0}
+	</select>
+	<!-- <select id="page" resultType="peo" parameterType="map">
+	实现分页 从第几(0开始)行开始往后几行
+		select * from t_people limit #{pageNum},#{pageSize}
+	</select> -->
+	<!-- 没有resultType -->
+	<insert id="ins" parameterType="People">
+		insert into t_people values(default,#{pname},#{age})
+	</insert>
+</mapper>
