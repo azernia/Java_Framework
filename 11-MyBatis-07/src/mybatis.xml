@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!--
+		使用注解时 mybatis.xml 中<mappers>使用 <package/> <mapper class=””/>
+	-->
+	<settings>
+		<setting name="logImpl" value="LOG4J"/>
+	</settings>
+	<typeAliases>
+		<!-- 给单一的类取别名 -->
+		<!-- <typeAlias type="com.rui.pojo.People" alias="peo"/> -->
+		<!-- 给包中的所有类取别名，别名为该类的类名 -->
+		<package name="com.rui.pojo"/>
+	</typeAliases>
+	<!-- default引用enviroment的id,当前所使用的环境 -->
+	<environments default="default">
+		<!-- 声明可使用的环境 -->
+		<!-- 不同系统用什么数据库就写什么 -->
+		<environment id="default">
+			<!-- 使用原生JDBC事物 -->
+			<transactionManager type="JDBC"></transactionManager>
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+				<property name="url" value="jdbc:mysql://localhost:3306/ssm?serverTimezone=UTC"/>
+				<property name="username" value="root"/>
+				<property name="password" value="capslock"/>
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<!-- <mapper class="com.rui.mapper.TeacherMapper"/>
+		<mapper class="com.rui.mapper.StudentMapper"/> -->
+		<package name="com.rui.mapper"/>
+	</mappers>
+</configuration>
