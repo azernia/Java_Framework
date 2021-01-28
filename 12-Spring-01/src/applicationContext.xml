@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- id:表示取到这个对象的标识 class:表示要创建哪个类对象 name:取别名,即对象名 -->
+	<bean id="peo" class="com.rui.pojo.People">
+		<!-- 可以使用有参构造 -->
+		<!-- ref:引用另一个bean value:基本数据类型包括String等 name:表示参数名 -->
+		<constructor-arg index="0" value="123"></constructor-arg>
+		<constructor-arg index="1" value="张三"></constructor-arg>
+	</bean>
+	<!-- 通过set注入 -->
+	<bean id="peo3" class="com.rui.pojo.People">
+		<!-- <property name="id" value="222"></property> <property name="name" 
+			value="Rui"></property> -->
+		<!-- 两种写法等价 -->
+		<!-- 集合可以使用set,list,map等 -->
+		<property name="id">
+			<value>222</value>
+		</property>
+		<property name="name">
+			<value>Rui</value>
+		</property>
+		<property name="sets">
+			<set>
+				<value>1</value>
+				<value>2</value>
+				<value>3</value>
+				<value>4</value>
+			</set>
+		</property>
+		<property name="list" value="1">
+		</property>
+		<property name="strs">
+			<array>
+				<value>1</value>
+				<value>2</value>
+				<value>3</value>
+			</array>
+		</property>
+		<property name="map">
+			<map>
+				<entry key="a" value="b">
+				</entry>
+				<entry key="c" value="d">
+				</entry>
+			</map>
+		</property>
+		<property name="desk" ref="desk"></property>
+	</bean>
+	<bean id="desk" class="com.bjsxt.pojo.Desk">
+    	<property name="id" value="1"></property>
+    	<property name="price" value="12"></property>
+    </bean>
+	<!-- 实例工厂创建 -->
+	<!-- <bean id="factory" class="com.rui.factory.PeopleFactory"></bean> <bean 
+		id="peo1" factory-bean="factory" factory-method="newInstance"></bean> -->
+	<!-- 静态工厂创建 -->
+	<!-- <bean id="peo2" class="com.rui.factory.PeopleFactory" factory-method="newInstance"></bean> -->
+</beans>
