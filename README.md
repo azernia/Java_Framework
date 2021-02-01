@@ -17,7 +17,7 @@
 - EasyUI
 ## MyBatis3
 - mybatis 3.5.6
-## Spring4
+## Spring5
 ## SpringMVC
 ## Hibernate3
 ## Hibernate4
