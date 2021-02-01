@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	  xmlns:tx="http://www.springframework.org/schema/tx"
+	  xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        https://www.springframework.org/schema/tx/spring-tx.xsd"
+	>
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driver}"></property>
+		<property name="url" value="${jdbc.url}"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+	<bean id="factory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="typeAliasesPackage" value="com.rui.pojo"></property>
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 扫描器相当于mybatis.xml中 mappers下package标签,扫描com.bjsxt.mapper包后会给对应接口创建对象 -->
+		<property name="basePackage" value="com.rui.mapper"></property>
+		<!-- 和factory产生关系 -->
+		<property name="sqlSessionFactoryBeanName" value="factory"></property>
+	</bean>
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<!-- 配置声明式事物 -->
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<!-- 哪些方法要控制 支持通配符 -->
+	<!-- 
+		propagation 控制事务传播行为. 
+		当一个具有事务控制的方法被另一个有事务控制的方法调用 后,需要如何管理事务(新建事务?在事务中执行?把事务挂起?报异 
+		常?) 
+		REQUIRED (默认值): 如果当前有事务,就在事务中执行,如果当 前没有事务,新建一个事务.
+		SUPPORTS:如果当前有事务就在事务中执行,如果当前没有事务,就在非事务状态下执行.
+		MANDATORY:必须在事务内部执行,如果当前有事务,就在事务中执行,如果没有事务,报错. 
+		REQUIRES_NEW:必须在事务中执行,如果当前没有事务,新建事务,如果当前有事务,把当前事务挂起. 
+		NOT_SUPPORTED:必须在非事务下执行,如果当前没有事务,正常执行,如果当前有事务,把当前事务挂起. 
+		NEVER:必须在非事务状态下执行,如果当前没有事务,正常执行,如果当前有事务,报错. 
+		NESTED:必须在事务状态下执行.如果没有事务,新建事务,如果当前有事务,创建一个嵌套事务 
+	-->
+			<tx:method name="ins*"/>
+			<tx:method name="del*"/>
+			<!-- read-only 是否为只读事物 true 建议查询事物使用 false 建议新增、删除、修改使用且此属性为默认值-->
+			<tx:method name="upd*"/>
+			<!-- rollback-for 需加上对应异常类的全限定路径 -->
+			<tx:method name="*" read-only="true" rollback-for="java.lang.Exception"/>
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<!-- 将切点范围设置大一些 -->
+		<aop:pointcut expression="execution(* com.rui.service.impl.*.*(..))" id="mypoint"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="mypoint"/>
+	</aop:config>
+</beans>
