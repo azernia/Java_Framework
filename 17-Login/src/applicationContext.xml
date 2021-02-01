@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd"
+	xmlns:context="http://www.springframework.org/schema/context"
+	default-autowire="byName">
+	<!-- 加载多个文件使用逗号分隔,classpath从类路径下加载 -->
+	<context:property-placeholder location="classpath:db.properties"/>
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="${jdbc.driver}"></property>
+		<property name="url"
+			value="${jdbc.url}"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+	<bean id="factory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="typeAliasesPackage" value="com.rui.pojo"></property>
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 扫描器相当于mybatis.xml中 mappers下package标签,扫描com.bjsxt.mapper包后会给对应接口创建对象 -->
+		<property name="basePackage" value="com.rui.mapper"></property>
+		<!-- 和factory产生关系 -->
+		<property name="sqlSessionFactoryBeanName" value="factory"></property>
+	</bean>
+	<bean id="usersService"
+		class="com.rui.service.impl.UsersServiceImpl">
+		<property name="um" ref="usersMapper"></property>
+	</bean>
+
+	<aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+	<bean id="mybefore" class="com.rui.advice.MyBefore"></bean>
+	<bean id="myafter" class="com.rui.advice.MyAfter"></bean>
+	<aop:config>
+		<aop:pointcut
+			expression="execution(* com.rui.service.impl.UsersServiceImpl.login(..))"
+			id="mypoint" />
+		<aop:advisor advice-ref="mybefore" pointcut-ref="mypoint" />
+		<aop:advisor advice-ref="myafter" pointcut-ref="mypoint" />
+	</aop:config>
+</beans>
