@@ -9,15 +9,7 @@
         http://www.springframework.org/schema/context
         https://www.springframework.org/schema/context/spring-context.xsd"
 	xmlns:context="http://www.springframework.org/schema/context">
-	<!-- base-package:配置包名,如果是多个包,使用逗号分隔 -->
-	
-	<bean id="teacher" class="com.rui.test.Teacher"></bean>
-	<!--
-		default 默认在beans中配置 全局配置default-autowire="default"
-		byName 找其他bean的id
-		byType 找其他bean中自己类属性的类型
-		no 不进行注入
-		constructor通过构造方法注入,是通过byName寻找的
-	  -->
-	<bean id="people" class="com.rui.test.People" autowire="byName"></bean>
+	<!-- bean标签默认是单例的,scope属性使其变成多例的 -->
+	<bean id="teacher1" class="com.rui.test.Teacher"></bean>
+	<!-- <bean id="teacher2" class="com.rui.test.Teacher"></bean> -->
 </beans>
