@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop.xsd">
+    <bean id="mybefore" class="com.rui.advice.MyBeforeAdvice"></bean>
+    <bean id="myafter" class="com.rui.advice.MyAfterAdvice"></bean>
+    <bean id="demo" class="com.rui.test.Demo"></bean>
+    <bean id="mythrow" class="com.rui.advice.MyThrowAdvice"></bean>
+    <bean id="myaround" class="com.rui.advice.MyAround"></bean>
+    <bean id="advicebyaspectj" class="com.rui.advice.AdviceByAspectJ"></bean>
+	<aop:config>
+		<!--
+			expression中是固定表达式
+				execution(通配符 设置切点的方法全路径,有参数时需要带上参数类型)
+			and args() 写参数的变量名
+			通配符
+				* 匹配任意方法名、任意类名、任意一级包名
+				(..) 匹配任意类型参数
+		-->
+		<!-- <aop:pointcut expression="execution(* com.rui.test.Demo.demo2())" id="mypoint"/>
+		advice-ref 引入的扩展功能包
+		<aop:advisor advice-ref="mybefore" pointcut-ref="mypoint"/>
+		<aop:advisor advice-ref="myafter" pointcut-ref="mypoint"/> -->
+		<!-- 通过AspectJ配置异常通知 -->
+		<!-- <aop:aspect ref="mythrow">
+			<aop:pointcut expression="execution(* com.rui.test.Demo.demo1())" id="mypoint"/>
+			<aop:after-throwing method="myException" pointcut-ref="mypoint" throwing="e"/>
+		</aop:aspect> -->
+		<!-- <aop:pointcut expression="execution(* com.rui.test.Demo.demo1())" id="mypoint"/>
+		<aop:advisor advice-ref="myaround" pointcut-ref="mypoint"/> -->
+		<aop:pointcut expression="execution(* com.bjsxt.test.Demo.demo1(String,int)) and args(name1,age1)" id="mypoint"/>
+    		<aop:pointcut expression="execution(* com.bjsxt.test.Demo.demo1(String)) and args(name1)" id="mypoint1"/>
+    		<aop:before method="mybefore" pointcut-ref="mypoint" arg-names="name1,age1"/>
+    		<aop:before method="mybefore1" pointcut-ref="mypoint1" arg-names="name1"/>
+    		<!-- <aop:after method="myafter" pointcut-ref="mypoint"/>
+    		<aop:after-returning method="myaftering" pointcut-ref="mypoint"/> 
+    		<aop:after-throwing method="mythrow" pointcut-ref="mypoint"/>
+    		<aop:around method="myarround"  pointcut-ref="mypoint"/>-->
+	</aop:config>
+</beans>
