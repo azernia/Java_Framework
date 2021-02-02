@@ -10,7 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+/**
+ * 文件下载
+ * @author Rui
+ * Date 2021年2月2日 下午3:06:35
+ */
 @Controller
 public class DemoController {
 	@RequestMapping("download")
