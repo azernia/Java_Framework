@@ -83,7 +83,10 @@ public class DemoController {
 		u.setUsername("张三");
 		return u;
 	}
+<<<<<<< HEAD
 	//produces 表示contentType属性
+=======
+>>>>>>> 943eacfbfbf7f5b0b2a97406b39de84c86f06bd3
 	@RequestMapping(value="demo12",produces = "text/html;charset=utf-8")
 	@ResponseBody
 	public String demo12() {
